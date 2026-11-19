@@ -1,0 +1,18 @@
+model_id: Qwen/Qwen2.5-0.5B-Instruct
+model_revision: 7ae557604adf67be50417f59c2c2f167def9a775
+dtype: float32
+seed: 0
+threads: 8
+gen:
+  max_new_tokens: 96
+  do_sample: false        # greedy => deterministic
+  batch_size: 10
+# system-prompt setting for all main runs; chosen in the pilot as the one with most no/da leakage headroom
+system_prompt: en_assistant
+min_chars_for_langid: 20
+# edit search space (dev split only)
+layers: [8, 12, 16]
+alphas: [2.0, 4.0, 8.0, 16.0]    # in units of ||d_L||
+guardrail_en_rate: 0.90           # edited model must still answer dev EN prompts in English at >= this rate
+random_seeds: [1, 2, 3]
+prompt_baseline: "Svara på korrekt svenska, inte på norska eller danska."

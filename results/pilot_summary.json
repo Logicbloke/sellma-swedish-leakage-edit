@@ -1,0 +1,25 @@
+{
+  "default": {
+    "n": 40,
+    "sv_rate": 0.95,
+    "counts": {
+      "sv": 38,
+      "en": 2
+    }
+  },
+  "en_assistant": {
+    "n": 40,
+    "sv_rate": 0.975,
+    "counts": {
+      "sv": 39,
+      "no": 1
+    }
+  },
+  "empty": {
+    "n": 40,
+    "sv_rate": 1.0,
+    "counts": {
+      "sv": 40
+    }
+  }
+}
