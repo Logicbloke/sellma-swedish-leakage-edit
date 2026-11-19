@@ -1,0 +1,60 @@
+  dirs = torch.load(RESULTS / "directions.pt")
+  e = torch.load(path)
+sanity checks passed
+{"condition": "baseline", "sv:n": 100, "sv:sv_answer_rate": 0.96, "sv:refusal_rate": 0.0, "sv:mean_words": 38.21, "sv:mean_sents": 3.37, "sv:nordic_sent_share": 0.047333333333333324, "sv:nordic_sent_ci": [0.021162499999999997, 0.07783749999999998], "sv:nordic_sent_pooled": 0.05934718100890208, "sv:leak_per_100w": 0.575765506411934, "sv:any_nordic_rate": 0.13, "sv:sv_answer_ci": [0.92, 0.99], "en:n": 100, "en:en_answer_rate": 1.0, "en:refusal_rate": 0.0, "en:mean_words": 55.9, "en:mean_sents": 3.92, "no:n": 100, "no:no_answer_rate": 0.65, "no:refusal_rate": 0.0, "no:mean_words": 38.85, "no:mean_sents": 3.15, "agreement_acc": 0.5785714285714286, "agreement_ci": [0.5, 0.6571428571428571], "ppl_sv": 34.23865356222827, "ppl_en": 11.613742958328931} 540s
+{"condition": "prompt", "sv:n": 100, "sv:sv_answer_rate": 1.0, "sv:refusal_rate": 0.0, "sv:mean_words": 37.32, "sv:mean_sents": 3.36, "sv:nordic_sent_share": 0.006999999999999999, "sv:nordic_sent_ci": [0.0, 0.016], "sv:nordic_sent_pooled": 0.008928571428571428, "sv:leak_per_100w": 0.08038585209003216, "sv:any_nordic_rate": 0.03, "sv:sv_answer_ci": [1.0, 1.0]} 174s
+{"condition": "edit_nordic", "sv:n": 100, "sv:sv_answer_rate": 0.97, "sv:refusal_rate": 0.0, "sv:mean_words": 36.71, "sv:mean_sents": 3.18, "sv:nordic_sent_share": 0.035666666666666666, "sv:nordic_sent_ci": [0.014000000000000002, 0.06266666666666666], "sv:nordic_sent_pooled": 0.0440251572327044, "sv:leak_per_100w": 0.5448106782892945, "sv:any_nordic_rate": 0.11, "sv:sv_answer_ci": [0.93, 1.0], "en:n": 100, "en:en_answer_rate": 1.0, "en:refusal_rate": 0.0, "en:mean_words": 49.92, "en:mean_sents": 3.82, "no:n": 100, "no:no_answer_rate": 0.58, "no:refusal_rate": 0.0, "no:mean_words": 38.2, "no:mean_sents": 3.01, "agreement_acc": 0.5714285714285714, "agreement_ci": [0.4928571428571429, 0.65], "ppl_sv": 37.16820626592393, "ppl_en": 12.302687549806949} 807s
+{"condition": "edit_en", "sv:n": 100, "sv:sv_answer_rate": 0.96, "sv:refusal_rate": 0.0, "sv:mean_words": 38.82, "sv:mean_sents": 3.89, "sv:nordic_sent_share": 0.04045238095238095, "sv:nordic_sent_ci": [0.01475892857142857, 0.07354821428571429], "sv:nordic_sent_pooled": 0.04113110539845758, "sv:leak_per_100w": 0.6955177743431221, "sv:any_nordic_rate": 0.09, "sv:sv_answer_ci": [0.92, 0.99], "en:n": 100, "en:en_answer_rate": 0.0, "en:refusal_rate": 0.0, "en:mean_words": 43.85, "en:mean_sents": 4.3, "no:n": 100, "no:no_answer_rate": 0.82, "no:refusal_rate": 0.0, "no:mean_words": 34.47, "no:mean_sents": 3.51, "agreement_acc": 0.5714285714285714, "agreement_ci": [0.4928571428571429, 0.65], "ppl_sv": 38.29234177870606, "ppl_en": 18.170825879134302} 818s
+{"condition": "random_1", "sv:n": 100, "sv:sv_answer_rate": 0.99, "sv:refusal_rate": 0.0, "sv:mean_words": 41.18, "sv:mean_sents": 2.91, "sv:nordic_sent_share": 0.030333333333333334, "sv:nordic_sent_ci": [0.008333333333333333, 0.05866666666666667], "sv:nordic_sent_pooled": 0.030927835051546393, "sv:leak_per_100w": 0.26711996114618747, "sv:any_nordic_rate": 0.08, "sv:sv_answer_ci": [0.97, 1.0], "en:n": 100, "en:en_answer_rate": 1.0, "en:refusal_rate": 0.0, "en:mean_words": 64.42, "en:mean_sents": 3.74, "agreement_acc": 0.5642857142857143, "agreement_ci": [0.4857142857142857, 0.6428571428571429], "ppl_sv": 37.61584768094064, "ppl_en": 12.328565776181359} 448s
+{"condition": "random_2", "sv:n": 100, "sv:sv_answer_rate": 0.87, "sv:refusal_rate": 0.0, "sv:mean_words": 42.04, "sv:mean_sents": 3.42, "sv:nordic_sent_share": 0.09299999999999999, "sv:nordic_sent_ci": [0.04782083333333333, 0.1436791666666666], "sv:nordic_sent_pooled": 0.09064327485380116, "sv:leak_per_100w": 1.0228353948620361, "sv:any_nordic_rate": 0.17, "sv:sv_answer_ci": [0.8, 0.93], "en:n": 100, "en:en_answer_rate": 1.0, "en:refusal_rate": 0.0, "en:mean_words": 70.33, "en:mean_sents": 4.31, "agreement_acc": 0.5714285714285714, "agreement_ci": [0.4928571428571429, 0.65], "ppl_sv": 37.863527247890886, "ppl_en": 12.374741773429438} 527s
+{"condition": "random_3", "sv:n": 100, "sv:sv_answer_rate": 0.93, "sv:refusal_rate": 0.0, "sv:mean_words": 33.38, "sv:mean_sents": 2.84, "sv:nordic_sent_share": 0.059333333333333335, "sv:nordic_sent_ci": [0.023666666666666666, 0.10233333333333333], "sv:nordic_sent_pooled": 0.07746478873239436, "sv:leak_per_100w": 0.689035350509287, "sv:any_nordic_rate": 0.11, "sv:sv_answer_ci": [0.88, 0.97], "en:n": 100, "en:en_answer_rate": 1.0, "en:refusal_rate": 0.0, "en:mean_words": 53.02, "en:mean_sents": 3.84, "agreement_acc": 0.6071428571428571, "agreement_ci": [0.5285714285714286, 0.6857142857142857], "ppl_sv": 37.533267274354706, "ppl_en": 12.387624843031475} 487s
+{
+ "prompt": {
+  "mean_diff": -0.04033333333333333,
+  "ci": [
+   -0.07266666666666666,
+   -0.011333333333333332
+  ],
+  "boot_tail_frac_ge_0": 0.0018
+ },
+ "edit_nordic": {
+  "mean_diff": -0.01166666666666666,
+  "ci": [
+   -0.05050416666666666,
+   0.02733749999999994
+  ],
+  "boot_tail_frac_ge_0": 0.2726
+ },
+ "edit_en": {
+  "mean_diff": -0.006880952380952383,
+  "ci": [
+   -0.04638273809523809,
+   0.034761904761904765
+  ],
+  "boot_tail_frac_ge_0": 0.3562
+ },
+ "random_1": {
+  "mean_diff": -0.017,
+  "ci": [
+   -0.051666666666666666,
+   0.01983333333333333
+  ],
+  "boot_tail_frac_ge_0": 0.1736
+ },
+ "random_2": {
+  "mean_diff": 0.04566666666666666,
+  "ci": [
+   0.003333333333333333,
+   0.09066666666666666
+  ],
+  "boot_tail_frac_ge_0": 0.9826
+ },
+ "random_3": {
+  "mean_diff": 0.012000000000000002,
+  "ci": [
+   -0.026335119047619045,
+   0.05323869047619047
+  ],
+  "boot_tail_frac_ge_0": 0.7176
+ }
+}

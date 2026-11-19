@@ -3,6 +3,10 @@
 A small, honest test of one claim from *Sparks of Weight-Space Programming* (Takehi et al., 2026): that tiny targeted
 weight edits can remove a failure mode, without adding capability. Candidate assignment for SELLMA.
 
+**Result (negative):** the selected edit's effect on held-out leakage (4.7% → 3.6%, paired CI −5.1 to +2.7 points)
+is indistinguishable from same-norm random edits, while a one-line prompt cuts leakage to 0.7%. Its dev-set gain
+(7.9% → 0.5%) was selection noise.
+
 **Report:** [`report/note.md`](report/note.md) (and `report/note.pdf`). **AI usage:** [`AI_USAGE.md`](AI_USAGE.md).
 
 ## Reproduce

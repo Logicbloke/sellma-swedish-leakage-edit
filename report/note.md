@@ -2,8 +2,14 @@
 
 *Research note, SELLMA candidate assignment. Model: Qwen2.5-0.5B-Instruct. All numbers come from files in `results/`.*
 
-**TL;DR.** `TODO(results)`: one or two sentences giving the main effect on held-out test prompts, how it compares with
-the prompting and random-direction controls, the regression and capability checks, and the verdict on the hypothesis.
+**TL;DR. Negative result.** On 100 held-out Swedish prompts, a 896-parameter edit along a "Swedish vs.
+Norwegian/Danish" direction moved the no/da sentence share from 4.7% to 3.6%. The paired difference is −1.2 points
+(95% CI −5.1 to +2.7). That is inside the range of three random directions of the same norm (3.0%, 5.9%, 9.3%), and
+the large dev-set gain (7.9% → 0.5%) did not replicate. A one-sentence **prompt removed most of the leakage**
+(0.7%, paired difference −4.0 points, CI −7.3 to −1.1) at no weight cost. Swedish competence did not improve (en/ett
+agreement 57–61% everywhere; Swedish perplexity rose by about 9% for *every* edit, random ones included). The
+hypothesis is **challenged** by its own pre-registered criteria. In this setting the failure is not controlled by one
+direction that a small additive edit can find, and the cheap baseline the article omits wins.
 
 ## 1 Claim tested and why
 
@@ -116,22 +122,61 @@ A hand audit of every flagged dev sentence (`results/manual_audit_dev.md`) found
 (82% precision). But they came from only 7 of the 40 baseline answers, and the metric misses word-level leakage
 inside sentences it still labels Swedish (e.g. "systemer" and "behovar" persist under the edit).
 
-<!-- TABLE -->
-`TODO(results)`: the main test table: one row per condition; columns for no/da sentence share [CI], leak/100 words,
-SV answer rate, EN→en rate, NO→no rate, agreement accuracy, Swedish perplexity and English perplexity. Below it, the
-paired differences against the baseline.
+**Test split** (100 prompts per language; selected edit L = 8, α = 8; ↓ = lower is better):
+
+| Condition | no/da sentence share ↓ [95% CI] | Δ vs baseline [95% CI] | lexicon /100w ↓ | SV→sv | EN→en | NO→no | en/ett acc. | PPL sv | PPL en |
+|---|---|---|---|---|---|---|---|---|---|
+| baseline | 4.7% [2.1, 7.8] | — | 0.58 | 96% | 100% | 65% | 57.9% | 34.2 | 11.6 |
+| prompt | **0.7%** [0.0, 1.6] | **−4.0** [−7.3, −1.1] | 0.08 | 100% | (=base) | (=base) | (=base) | (=base) | (=base) |
+| **edit_nordic** | 3.6% [1.4, 6.3] | −1.2 [−5.1, +2.7] | 0.55 | 97% | 100% | 58% | 57.1% | 37.2 | 12.3 |
+| edit_en (SV−EN) | 4.0% [1.5, 7.4] | −0.7 [−4.6, +3.5] | 0.70 | 96% | **0%** | 82% | 57.1% | 38.3 | 18.2 |
+| random seed 1 | 3.0% [0.8, 5.9] | −1.7 [−5.2, +2.0] | 0.27 | 99% | 100% | n/a | 56.4% | 37.6 | 12.3 |
+| random seed 2 | 9.3% [4.8, 14.4] | +4.6 [+0.3, +9.1] | 1.02 | 87% | 100% | n/a | 57.1% | 37.9 | 12.4 |
+| random seed 3 | 5.9% [2.4, 10.2] | +1.2 [−2.6, +5.3] | 0.69 | 93% | 100% | n/a | 60.7% | 37.5 | 12.4 |
+
+The prompt is added to Swedish prompts only, so its likelihood and EN/NO metrics equal the baseline's. Δ is a paired
+bootstrap over prompts. Under the edit, 11 answers leak against 13 at baseline, but **only 3 prompts leak in both**.
+The edit reshuffles *which* answers leak more than it reduces how many do.
 
 ![Dev sweep: leakage and English guardrail vs α, per layer](../results/fig_dev_sweep.png)
 
 ![Test: no/da sentence share per condition, 95% bootstrap CI](../results/fig_test.png)
 
-`TODO(results)`: 2–3 example outputs from the baseline and the edit for the same prompt, checked by hand.
+**Examples** (test, greedy decoding, truncated; checked by hand):
+
+- *"Varför spelar vindkraft roll i vardagen?"* Baseline: "…viktiga **rolle** i vardagen, men de **er** inte fysiskt
+  aktiv. De **inneholder** en kreativ **og inspirerende** rolle som kan **hjælpe** med at **opnå nye ideer**…"
+  (switches to Danish mid-answer). Edit: "Vindkraft rollen var en av de mest viktige rolle i världens historia…"
+  (no Danish sentence, but still "rolle" and equally off-topic). Prompt: "…spelar en viktig **rolle** i vardagen…"
+- *"Ge tre praktiska tips om norrsken."* Baseline: "Kolla en geografisk map **for** Norrland. 2. **Vis** en geografi
+  eller geologisk museum…". Edit: "Såväl det är en liten land, men det är ett viktig landskap…" (no leakage, no
+  content either). Prompt: "1. Svara på korrekt svenska: 'Här är ett svar på korrekt svenska.'" The model sometimes
+  **echoes the instruction**, a quality cost the leakage metric doesn't see.
+- All three conditions misread *norrsken* (northern lights) as *Norra Sverige*, a competence failure that none of the
+  interventions touch.
 
 ## 7 Interpretation
 
-`TODO(results)`: does the edit beat the random directions and the prompt? Does edit_en do as well, meaning the
-specific direction doesn't matter? Is Swedish competence flat, meaning an obstacle was removed rather than a
-capability added? Which regressions appeared?
+- **The edit does not beat the controls.** Its effect is smaller than its CI and sits between the random directions
+  (one random seed even "beats" it). On dev, almost every edit looked helpful; on test, two of three random edits made
+  leakage *worse*. The most economical explanation is that any perturbation of this size re-rolls greedy decoding.
+  It removes leakage from some answers and adds it to others, and the dev selection picked a lucky draw from 12
+  configurations on 40 prompts (winner's curse). This is the same pattern as the article's feedback-driven Qwen
+  search: an edit kept because it scored best on the evaluation it was tuned on.
+- **The direction is real, but it is the wrong lever.** The SV−EN vector at the same norm is a strong language switch:
+  English prompts drop to 0% English (they are answered in Indonesian, Swedish and others, e.g. "Source criticism,
+  atau 'kritik sumber' dalam bahasa…"). So "one direction controls the answer language" holds at the coarse level,
+  which is the failure this model barely has (pilot: 95–100% Swedish). The fine sv-vs-no/da distinction that leaks
+  is not fixed by its difference-of-means direction, at least not at a norm that leaves the model intact.
+- **No capability was added, and there was a small generic cost.** en/ett accuracy is near chance in every condition,
+  and Swedish perplexity rises by about 9% for the edit *and* for every random vector. That is the price of the
+  perturbation, not a Swedish-specific effect.
+- **Regressions:** the edit lowered Norwegian prompts answered in Norwegian from 65% to 58% (it pushes towards
+  Swedish, as expected), with English unaffected. edit_en broke English completely. The prompt had no measured
+  regression, but sometimes echoes itself.
+- **Measurement caveat.** The primary metric catches sentence-level switches (82% precision in the dev audit) but
+  misses word-level forms ("rolle", "steder") in sentences it still labels Swedish. Every condition keeps such
+  forms. A human-labelled leakage set would be the next measurement upgrade.
 
 ## 8 Limitations
 
@@ -152,8 +197,17 @@ capability added? Which regressions appeared?
 
 ## 9 Recommendation and next experiment
 
-`TODO(results)`: the recommendation for SELLMA, for example whether cheap edits are worth using against Scandinavian
-leakage in small Swedish models versus prompting or fine-tuning, plus the single best next experiment.
+**Recommendation.** Don't use activation-direction weight edits to fix Scandinavian leakage in small models. A
+one-line instruction does better at zero cost, and the edit's apparent dev gain was selection noise. More generally,
+for SELLMA: any claimed weight-space fix should be reported **against a prompting baseline and same-norm random
+edits, on a split not used for selection.** Without those, this experiment would have reported a 94% reduction
+(7.9% → 0.5%).
+
+**Next experiment.** Test the article's actual claim, *LLM-proposed* edits, under the same harness. Give a frontier
+model the leakage examples and the per-layer directions and ask it to propose an edit, then score it on the untouched
+test split against the same controls. Running it on a larger Swedish-capable model (e.g. a 1.5–3B model, where
+outputs are coherent enough for leakage to matter) with a small human-labelled leakage set would tell whether native
+weight reasoning finds a lever that difference-of-means does not.
 
 ---
 
